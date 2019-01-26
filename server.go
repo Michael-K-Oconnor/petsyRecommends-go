@@ -72,12 +72,12 @@ func dbQuery(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	db.SetMaxOpenConns(30)
+	db.SetMaxOpenConns(10)
 	err = db.Ping()
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 	http.HandleFunc("/api/recommends/", dbQuery)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(http.ListenAndServe(":5001", nil))
 }

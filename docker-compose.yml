@@ -3,10 +3,9 @@ version: "3.7"
 services:
   petsy-search:
     image: michaelkoconnor/petsy-search-go
-    build: .
     environment:
       NODE_ENV: production
     ports:
-      - 8080:8080
+      - 5001:5001
     env_file: .env
     restart: unless-stopped
