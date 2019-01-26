@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -21,11 +22,13 @@ type rowStruct struct {
 	ImgURL  string `json:"imgURL"`
 }
 
+var host = os.Getenv("HOSTNAME")
+
 func dbQuery(w http.ResponseWriter, r *http.Request) {
 	t1 := time.Now()
 	defer func() {
-		StatCount("goserver.http.get.recommends.request", 1)
-		StatTime("goserver.http.get.recommends.response_time", time.Since(t1))
+		StatCount(host+".http.get.recommends.request", 1)
+		StatTime(host+".http.get.recommends.response_time", time.Since(t1))
 	}()
 	w.Header().Set("Content-Type", "application/json")
 	searchQuery := strings.TrimPrefix(r.URL.Path, "/api/recommends/")

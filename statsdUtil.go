@@ -9,7 +9,7 @@ import (
 )
 
 var queue = make(chan string, 100)
-var host = os.Getenv("STATSD_HOST")
+var statsDhost = os.Getenv("STATSD_HOST")
 
 func init() {
 	go statsdSender()
@@ -29,7 +29,7 @@ func StatGauge(metric string, value int) {
 
 func statsdSender() {
 	for s := range queue {
-		if conn, err := net.Dial("udp", host+":8125"); err == nil {
+		if conn, err := net.Dial("udp", statsDhost+":8125"); err == nil {
 			io.WriteString(conn, s)
 			conn.Close()
 		}
