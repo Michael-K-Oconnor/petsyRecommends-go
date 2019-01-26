@@ -1,13 +1,17 @@
-FROM node:10.13-alpine
+FROM golang:1.8 AS builder
 
-WORKDIR /usr/src/app
+WORKDIR /go/src/staging
 
-COPY package*.json ./
+COPY . /go/src/staging
 
-RUN npm install
+RUN go get -d -v ./...
+RUN go install -v ./...
 
-COPY . .
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o app .
 
-EXPOSE 5001
+FROM scratch
+WORKDIR /root/
+COPY --from=builder /go/src/staging/app .
 
-CMD ["npm", "start"]
+EXPOSE 8080
+ENTRYPOINT ["./app"]
