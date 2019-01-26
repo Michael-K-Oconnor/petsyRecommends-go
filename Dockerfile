@@ -13,5 +13,5 @@ FROM scratch
 WORKDIR /root/
 COPY --from=builder /go/src/staging/app .
 
-EXPOSE 8080
+EXPOSE 5001
 ENTRYPOINT ["./app"]
